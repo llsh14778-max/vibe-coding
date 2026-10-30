@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ROAST - 스페셜티 커피 라운지 & 바이브 코딩</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            min-height: 100vh;
+            background: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;python "옮겨둔_실제_경로\app.py"
+        }
+
+        /* =========================================
+           상단 헤더 (벤치마킹 레퍼런스 스타일)
+           ========================================= */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 42px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
+            z-index: 100;
+            transition: background 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .logo-emblem {
+            width: 22px;
+            height: 38px;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: stretch;
+            padding: 4px 3px;
+        }
+
+        .logo-emblem span {
+            width: 1.5px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 1px;
+        }
+
+        .logo-text-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-en {
+            font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            line-height: 1;
+        }
+
+        .logo-kr {
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 3px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 26px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            transition: color 0.2s ease, opacity 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #fde68a;
+        }
+
+        .nav-extra {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: #ffffff;
+            padding-left: 8px;
+        }
+
+        .nav-extra a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-extra .open-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+
+        .nav-extra .open-badge::before {
+            content: "";
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #ffffff;
+        }
+
+        .nav-extra .phone {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* 햄버거 버튼 (기본 숨김, 작은 해상도에서 표시) */
+        .hamburger-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 28px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 110;
+        }
+
+        .hamburger-btn span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .hamburger-btn.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        /* =========================================
+           벤치마킹 커피 히어로 섹션
+           ========================================= */
+        .hero-coffee {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 640px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 0 6vw 16vh;
+            background-image:
+                linear-gradient(180deg, rgba(15, 10, 7, 0.35) 0%, rgba(15, 10, 7, 0.15) 45%, rgba(15, 10, 7, 0.65) 100%),
+                url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=2000&q=85");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        /* 좌측 하단 메인 타이포그래피 그룹 */
+        .hero-copy-group {
+            display: flex;
+            align-items: flex-end;
+            gap: 36px;
+            z-index: 2;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-brand-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-sub-en {
+            font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 0.38em;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 10px;
+            padding-left: 0.38em; /* letter-spacing 중앙 보정 */
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-main-en {
+            font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+            font-size: clamp(3.8rem, 7vw, 6.2rem);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            line-height: 0.92;
+            color: #ffffff;
+            text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-desc-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 6px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-desc-light {
+            font-size: 1.05rem;
+            font-weight: 400;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.92);
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-desc-bold {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 0;
+        }
+
+        /* 좌측 최하단 SOUND 컨트롤 */
+        .hero-sound {
+            position: absolute;
+            left: 36px;
+            bottom: 26px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            z-index: 3;
+            user-select: none;
+        }
+
+        .sound-wave {
+            width: 24px;
+            height: 10px;
+            stroke: #ffffff;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        /* 우측 하단 회전 원형 뱃지 (관심고객등록 / 시음회등록) */
+        .hero-circle-cta {
+            position: absolute;
+            right: 48px;
+            bottom: 54px;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: #ffffff;
+            z-index: 3;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-circle-cta:hover {
+            transform: scale(1.06);
+        }
+
+        .circle-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            animation: rotateCircle 18s linear infinite;
+        }
+
+        .circle-svg text {
+            font-size: 10.5px;
+            font-weight: 600;
+            fill: rgba(255, 255, 255, 0.9);
+            letter-spacing: 2.3px;
+        }
+
+        .circle-center-text {
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.25;
+            text-align: center;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes rotateCircle {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =========================================
+           하단 섹션 (바이브 코딩이란? & 차이점)
+           ========================================= */
+        .section {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 24px 60px;
+            scroll-margin-top: 70px;
+            background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0f172a 55%, #020617 100%);
+        }
+
+        .card {
+            max-width: 680px;
+            width: 100%;
+            background: rgba(30, 41, 59, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 52px 44px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            scroll-margin-top: 94px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: #a5b4fc;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 9999px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card p {
+            font-size: 1.125rem;
+            line-height: 1.75;
+            color: #cbd5e1;
+            word-break: keep-all;
+            margin-bottom: 16px;
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            color: #e0e7ff;
+            font-weight: 600;
+        }
+
+        .keywords {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .keyword {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .diff-container {
+            max-width: 860px;
+            width: 100%;
+        }
+
+        .diff-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 32px;
+            text-align: left;
+        }
+
+        .diff-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 28px 24px;
+        }
+
+        .diff-box.vibe {
+            background: linear-gradient(145deg, rgba(99, 102, 241, 0.16), rgba(168, 85, 247, 0.12));
+            border-color: rgba(165, 180, 252, 0.3);
+        }
+
+        .diff-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .diff-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .diff-list li {
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            padding-left: 20px;
+            position: relative;
+            word-break: keep-all;
+        }
+
+        .diff-list li::before {
+            content: "•";
+            position: absolute;
+            left: 4px;
+            color: #64748b;
+            font-weight: bold;
+        }
+
+        .diff-box.vibe .diff-list li::before {
+            color: #a855f7;
+        }
+
+        /* 푸터 */
+        .footer {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            padding: 36px 24px;
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .footer-address {
+            font-style: normal;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .footer-copy {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 1024px) {
+            .header {
+                padding: 0 24px;
+            }
+            .hamburger-btn {
+                display: flex;
+            }
+            .nav-right {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: min(320px, 80vw);
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.96);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 100px 32px 40px;
+                gap: 32px;
+                transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: -20px 0 40px rgba(0, 0, 0, 0.5);
+                z-index: 105;
+            }
+            .nav-right.active {
+                right: 0;
+            }
+            .nav-menu {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 22px;
+                width: 100%;
+            }
+            .nav-menu a {
+                font-size: 1.05rem;
+                display: block;
+                width: 100%;
+            }
+            .nav-extra {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+                padding-left: 0;
+                padding-top: 24px;
+                border-top: 1px solid rgba(255, 255, 255, 0.12);
+                width: 100%;
+            }
+            .hero-copy-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                padding: 0 20px;
+            }
+            .hero-coffee {
+                padding: 0 24px 120px;
+            }
+            .hero-sub-en {
+                font-size: 1rem;
+            }
+            .hero-desc-bold {
+                font-size: 1.1rem;
+            }
+            .hero-circle-cta {
+                right: 20px;
+                bottom: 24px;
+                width: 88px;
+                height: 88px;
+            }
+            .card {
+                padding: 36px 24px;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            .diff-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 (벤치마킹 레이아웃 적용) -->
+    <header class="header">
+        <a href="#home" class="logo">
+            <div class="logo-emblem">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="logo-text-wrap">
+                <span class="logo-en">THE S</span>
+                <span class="logo-kr">더에스커피</span>
+            </div>
+        </a>
+
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="메뉴 열기" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-right" id="navRight">
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">HOME</a></li>
+                    <li><a href="#about">바이브코딩이란?</a></li>
+                    <li><a href="#differences">기존코딩과의 차이점</a></li>
+                    <li><a href="#home">ROASTERY</a></li>
+                    <li><a href="#home">BRAND STORY</a></li>
+                    <li><a href="#home">CONTACT</a></li>
+                </ul>
+            </nav>
+            <div class="nav-extra">
+                <a href="#about">시음회예약등록</a>
+                <span class="open-badge">11월 오픈예정</span>
+                <span class="phone">063-219-1010</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 벤치마킹 커피 히어로 영역 -->
+        <section id="home" class="hero-coffee">
+            <div class="hero-copy-group">
+                <div class="hero-brand-block">
+                    <span class="hero-sub-en">SPECIALTY</span>
+                    <h1 class="hero-main-en">THE S</h1>
+                </div>
+                <div class="hero-desc-block">
+                    <p class="hero-desc-light">
+                        지금까지 경험하지 못한<br>
+                        새로운 커피의 깊이
+                    </p>
+                    <p class="hero-desc-bold">
+                        전주 THE S, 최초의 스페셜티 로스터리 라운지
+                    </p>
+                </div>
+            </div>
+
+            <!-- 좌측 하단 SOUND 표시 -->
+            <div class="hero-sound">
+                <svg class="sound-wave" viewBox="0 0 28 10">
+                    <path d="M 1 5 Q 4.5 1, 8 5 T 15 5 T 22 5 T 27 5" />
+                </svg>
+                <span>SOUND</span>
+            </div>
+
+            <!-- 우측 하단 원형 회전 버튼 -->
+            <a href="#about" class="hero-circle-cta" aria-label="시음회 고객 등록">
+                <svg class="circle-svg" viewBox="0 0 100 100">
+                    <defs>
+                        <path id="textCircle" d="M 50, 50 m -38, 0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
+                    </defs>
+                    <text>
+                        <textPath href="#textCircle">
+                            REGISTER SPECIALTY THE S • COFFEE •
+                        </textPath>
+                    </text>
+                </svg>
+                <div class="circle-center-text">
+                    시음<br>고객<br>등록
+                </div>
+            </a>
+        </section>
+
+        <!-- 섹션 1: 바이브 코딩이란? -->
+        <section class="section">
+            <div id="about" class="card">
+                <span class="badge">VIBE CODING</span>
+                <h2>바이브 코딩이란?</h2>
+                <p>
+                    복잡한 프로그래밍 문법을 일일이 직접 작성하는 대신,
+                    <span class="highlight">AI에게 원하는 느낌(Vibe)과 아이디어를 자연어로 설명</span>하며
+                    직관적으로 소프트웨어를 만들어가는 새로운 개발 방식입니다.
+                </p>
+                <p>
+                    개발자는 코드 한 줄 한 줄의 구현보다 <span class="highlight">무엇을 만들지(기획과 방향성)</span>에 집중하고,
+                    AI와 대화하며 빠르게 결과를 완성해 나갑니다.
+                </p>
+                <div class="keywords">
+                    <span class="keyword">#자연어_프로그래밍</span>
+                    <span class="keyword">#AI_페어_프로그래밍</span>
+                    <span class="keyword">#아이디어_중심_개발</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 2: 기존 코딩과의 차이점 -->
+        <section id="differences" class="section">
+            <div class="card diff-container">
+                <span class="badge">COMPARISON</span>
+                <h2>기존 코딩과의 차이점</h2>
+                <p>
+                    문법과 구현 중심의 전통적인 코딩에서 벗어나,
+                    <span class="highlight">의도와 창의성 중심</span>으로 패러다임이 변화합니다.
+                </p>
+
+                <div class="diff-grid">
+                    <div class="diff-box">
+                        <div class="diff-title">💻 기존 코딩 방식</div>
+                        <ul class="diff-list">
+                            <li>프로그래밍 언어의 <strong>정확한 문법과 규칙</strong>을 직접 타이핑해야 함</li>
+                            <li>작은 오타나 세미콜론 누락 같은 <strong>구문 에러 해결</strong>에 많은 시간 소요</li>
+                            <li>아이디어를 실제 화면으로 확인하기까지 <strong>높은 진입장벽과 긴 개발 시간</strong></li>
+                            <li>'어떻게 구현할까(How)'에 대부분의 에너지를 집중</li>
+                        </ul>
+                    </div>
+
+                    <div class="diff-box vibe">
+                        <div class="diff-title">✨ 바이브 코딩 방식</div>
+                        <ul class="diff-list">
+                            <li>일상적인 <strong>자연어 대화와 프롬프트</strong>로 원하는 기능을 즉시 생성</li>
+                            <li>세부 구현과 디버깅은 AI에게 맡기고 <strong>전체 흐름과 완성도</strong>를 조율</li>
+                            <li>상상한 아이디어를 <strong>단 몇 분 만에 프로토타입</strong>으로 시각화</li>
+                            <li>'무엇을 만들고 왜 필요한가(What &amp; Why)'에 집중</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <address class="footer-address">전라북도 전주시 기린대로 219</address>
+        <p class="footer-copy">Copyright ⓒ YJS. ALL right reserved.</p>
+    </footer>
+
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navRight = document.getElementById('navRight');
+
+        hamburgerBtn.addEventListener('click', () => {
+            const isOpen = navRight.classList.toggle('active');
+            hamburgerBtn.classList.toggle('active', isOpen);
+            hamburgerBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        // 메뉴 항목 클릭 시 모바일 메뉴 닫기
+        navRight.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navRight.classList.remove('active');
+                hamburgerBtn.classList.remove('active');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+    </script>
+</body>
+</html>
